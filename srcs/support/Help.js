@@ -13,9 +13,10 @@ const mountDir = dir =>
     .ap(Either.fromNullable(dir))
     .ap(compose(map(prop('join')), Either.fromNullable, require) ('path'))
 
-const exec = f => new Task((rej, res) => {
+const exec = (f,ctx) => new Task((rej, res) => {
   try {
-    return res(f())
+    const args = Array.prototype.slice.call(arguments, 2)
+    return res(f.apply(ctx, args))
   }
   catch (e) {
     return rej('Errrrrroooooouuuuu :: '.concat(e))
