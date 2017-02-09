@@ -21,7 +21,7 @@ const listen = curry((port, app) =>
     try {
       return app.listen(port, function() {
         compose(f => Help.exec(f, this), prop('address')) (this)
-          .fork(console.error, Help.trace('Server is running'))
+          .fork(console.error, Help.trace('Server is running on'))
         return res(app)
       })
     }
