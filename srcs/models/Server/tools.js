@@ -13,13 +13,17 @@ const expressStatic = dir =>
 const useStatic = curry((dir, app) =>
   Help.exec(_ => app.use(expressStatic(dir)))
 )
-  
+
 const set = curry((tag, val, app) => Help.exec(_ => app.set(tag, val)))
 
 const listen = curry((port, app) =>
   new Task((rej, res) => {
     try {
-      return app.listen(port, _ => res(`Server is running on port ${port}`))
+      return app.listen(port, function() {
+        compose(f => Help.exec(f, this), prop('address')) (this)
+          .fork(console.error, Help.trace('Server is running'))
+        return res(app)
+      })
     }
     catch (e) {
         return rej(e)
