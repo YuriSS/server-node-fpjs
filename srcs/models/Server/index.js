@@ -7,8 +7,6 @@ const {Help} = require('../../support/')
 const Tools = require('./tools')
 
 
-const createApp = _ => compose(Help.exec, require) ('express')
-
 const configApp = curry((dir, engine, app) =>
   Task.of(app)
     .chain(Tools.set('views', dir))
@@ -17,9 +15,11 @@ const configApp = curry((dir, engine, app) =>
 )
 
 const boot = curry((port, dir, engine) =>
-  createApp()
-    .map(app => d => configApp(d, engine, app))
+  Task.of(app => dir => engine => ({app, dir, engine}))
+    .ap(compose(Help.exec, require) ('express'))
     .ap(compose(Help.eitherToTask, Help.mountDir) (dir))
+    .ap(compose(Help.eitherToTask, Either.fromNullable) (engine))
+    .chain(({app:a, dir:d, engine:e}) => configApp(d, e, a))
     .chain(Tools.listen(port))
 )
 
