@@ -1,7 +1,7 @@
 
 const Task = require('data.task')
 const Either = require('data.either')
-const {curry, compose, prop} = require('ramda')
+const {map, curry, compose, prop} = require('ramda')
 
 const {Help} = require('../../support/')
 const Tools = require('./tools')
@@ -18,7 +18,7 @@ const configApp = curry((dir, engine, app) =>
 
 const boot = curry((port, dir, engine) =>
   createApp()
-    .chain(app => dir => configApp(dir, engine, app))
+    .map(app => d => configApp(d, engine, app))
     .ap(compose(Help.eitherToTask, Help.mountDir) (dir))
     .chain(Tools.listen(port))
 )

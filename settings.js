@@ -1,7 +1,7 @@
 
 const Task = require('data.task')
 const Either = require('data.either')
-const {Help} = require('./srcs/support')
+const {Help} = require('./srcs/support/')
 const {prop, compose, curry} = require('ramda')
 
 

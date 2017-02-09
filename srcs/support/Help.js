@@ -1,7 +1,7 @@
 
 const Task = require('data.task')
 const Either = require('data.either')
-const {curry, compose, map, prop} = require('ramda')
+const {identity, curry, compose, map, prop} = require('ramda')
 
 
 const eitherToTask = either => either.fold(Task.rejected, Task.of)
@@ -9,7 +9,7 @@ const eitherToTask = either => either.fold(Task.rejected, Task.of)
 const taskToEither = task => task.fork(Either.Left, Either.Right)
 
 const mountDir = dir =>
-  Either.of(d => f => compose(map(root => f(root, d)), taskToEither, prop('PROJECT_DIR'), require) ('../../settings'))
+  Either.of(d => f => compose(chain(identity), map(root => f(root, d)), taskToEither, prop('PROJECT_DIR'), require) ('../../settings'))
     .ap(Either.fromNullable(dir))
     .ap(compose(map(prop('join')), Either.fromNullable, require) ('path'))
 
