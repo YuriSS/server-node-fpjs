@@ -3,7 +3,7 @@ const Task = require('data.task')
 const Either = require('data.either')
 const {curry, compose, prop} = require('ramda')
 
-const {Help} = require('../support/')
+const {Help} = require('../../support/')
 
 const use = curry((tag, val, app) => Help.exec(_ => app.use(tag, val)))
 
@@ -27,20 +27,4 @@ const listen = curry((port, app) =>
   })
 )
 
-const createApp = _ => (compose(Help.exec, require) ('express'))
-
-const configApp = curry((dir, engine, app) =>
-  Task.of(app)
-    .chain(set('views', dir))
-    .chain(set('view engine', require(engine)))
-    .chain(useStatic(dir))
-)
-
-const boot = curry((port, dir, engine) =>
-  createApp()
-    .chain(configApp(dir, engine))
-    .chain(listen(port))
-)
-
-
-module.exports = boot
+module.exports = {listen, set, useStatic, expressStatic, use}

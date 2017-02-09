@@ -6,10 +6,12 @@ const {curry, compose, map, prop} = require('ramda')
 
 const eitherToTask = either => either.fold(Task.rejected, Task.of)
 
+const taskToEither = task => task.fork(Either.Left, Either.Right)
+
 const mountDir = dir =>
-  Either.of(d => f => f(__dirname, d))
+  Either.of(d => f => compose(map(root => f(root, d)), taskToEither, prop('PROJECT_DIR'), require) ('../../settings'))
     .ap(Either.fromNullable(dir))
-    .ap(compose(map(prop('join')), Either.fromNullable) (require('path')))
+    .ap(compose(map(prop('join')), Either.fromNullable, require) ('path'))
 
 const exec = f => new Task((rej, res) => {
   try {
