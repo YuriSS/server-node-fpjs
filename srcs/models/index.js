@@ -1,4 +1,5 @@
 
 module.exports = ({
-  bootServer : require('./Server')
+  bootServer : require('./Server'),
+  bootRoutes : require('./Routes')
 })

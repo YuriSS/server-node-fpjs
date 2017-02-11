@@ -3,7 +3,7 @@ const Task = require('data.task')
 const Either = require('data.either')
 const {map, curry, compose, prop, identity} = require('ramda')
 
-const Server = require('./srcs/')
+const {Routes, Server} = require('./srcs/')
 
 
 const getFromProcess = p =>
@@ -25,4 +25,7 @@ const engine = getFromProcess('ENGINE')
 
 
 Server.bootServer(port, path, engine)
-  .fork(console.error, identity)
+  .chain(Routes.bootRoutes)
+  .fork(e => console.error('Finish error: '.concat(e)),
+        _ => console.log('App is running...')
+  )

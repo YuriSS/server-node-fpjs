@@ -1,0 +1,7 @@
+[
+  {
+    "page_name" : "Home",
+    "uri" : "/",
+    "file" : "index.ejs"
+  }
+]

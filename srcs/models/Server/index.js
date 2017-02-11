@@ -17,7 +17,7 @@ const configApp = curry((dir, engine, app) =>
 const boot = curry((port, dir, engine) =>
   Task.of(app => dir => engine => ({app, dir, engine}))
     .ap(compose(Help.exec, require) ('express'))
-    .ap(compose(Help.eitherToTask, Help.mountDir) (dir))
+    .ap(Help.mountDir(dir))
     .ap(compose(Help.eitherToTask, Either.fromNullable) (engine))
     .chain(({app:a, dir:d, engine:e}) => configApp(d, e, a))
     .chain(Tools.listen(port))

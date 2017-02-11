@@ -1,6 +1,7 @@
 
-const {bootServer} = require('./models/')
+const {bootServer, bootRoutes} = require('./models/')
 
 module.exports = {
-  bootServer
+  Server : { bootServer},
+  Routes : { bootRoutes}
 }
